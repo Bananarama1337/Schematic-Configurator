@@ -10,8 +10,17 @@ Item {
         width: 150
         height: 75
         border.color: "black"
-        border.width: isSelected ? 2 : 4
-        //radius: 5
+        border.width: 2
+        radius: 5
+
+        property real minWidth: 50
+        property real maxWidth: 400
+        property real minHeight: 50
+        property real maxHeight: 300
+        property real minX: 0
+        property real maxX: 500
+        property real minY: 0
+        property real maxY: 400
         property bool isSelected : false
         property bool isPressed : false
 
@@ -31,26 +40,325 @@ Item {
                 propagateComposedEvents: false
 
                 onEntered: {
-                    console.log("Hovering over the rectangle")
+                    console.log("Hovering over the topLeftResizer")
                     cursorShape = Qt.SizeFDiagCursor
                 }
 
                 onExited: {
-                    console.log("Hover left the rectangle")
+                    console.log("Hover left the topLeftResizer")
                     cursorShape = Qt.ArrowCursor
                 }
 
                 onPressed: {
-                    console.log("Resizer pressed")
+                    console.log("topLeftResizer pressed")
                 }
 
                 onPositionChanged: {
                     if (pressed) {
-                        mainRectangle.width -= mouseX
-                        mainRectangle.x += mouseX
+                        var newWidth = mainRectangle.width - mouseX;
+                        var newHeight = mainRectangle.height - mouseY;
 
-                        mainRectangle.height -= mouseY
-                        mainRectangle.y += mouseY
+                        mainRectangle.width = clamp(newWidth, mainRectangle.minWidth, mainRectangle.maxWidth);
+                        mainRectangle.height = clamp(newHeight, mainRectangle.minHeight, mainRectangle.maxHeight);
+
+                        if (newWidth >= mainRectangle.minWidth && newWidth <= mainRectangle.maxWidth) {
+                            mainRectangle.x += mouseX;
+                        }
+                        if (newHeight >= mainRectangle.minHeight && newHeight <= mainRectangle.maxHeight) {
+                            mainRectangle.y += mouseY;
+                        }
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            id: bottomLeftResizer
+            width: 12
+            height: 12
+            radius: 12
+            visible: mainRectangle.isSelected
+            anchors.horizontalCenter: mainRectangle.left
+            anchors.verticalCenter: mainRectangle.bottom
+            color: "lightblue"
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                propagateComposedEvents: false
+
+                onEntered: {
+                    console.log("Hovering over the bottomLeftResizer")
+                    cursorShape = Qt.SizeBDiagCursor
+                }
+
+                onExited: {
+                    console.log("Hover left the bottomLeftResizer")
+                    cursorShape = Qt.ArrowCursor
+                }
+
+                onPressed: {
+                    console.log("bottomLeftResizer pressed")
+                }
+
+                onPositionChanged: {
+                    if (pressed) {
+                        var newWidth = mainRectangle.width - mouseX;
+                        var newHeight = mainRectangle.height + mouseY;
+
+                        mainRectangle.width = clamp(newWidth, mainRectangle.minWidth, mainRectangle.maxWidth);
+                        mainRectangle.height = clamp(newHeight, mainRectangle.minHeight, mainRectangle.maxHeight);
+
+                        if (newWidth >= mainRectangle.minWidth && newWidth <= mainRectangle.maxWidth) {
+                            mainRectangle.x += mouseX;
+                        }
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            id: topRightResizer
+            width: 12
+            height: 12
+            radius: 12
+            visible: mainRectangle.isSelected
+            anchors.horizontalCenter: mainRectangle.right
+            anchors.verticalCenter: mainRectangle.top
+            color: "lightblue"
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                propagateComposedEvents: false
+
+                onEntered: {
+                    console.log("Hovering over the topRightResizer")
+                    cursorShape = Qt.SizeBDiagCursor
+                }
+
+                onExited: {
+                    console.log("Hover left the topRightResizer")
+                    cursorShape = Qt.ArrowCursor
+                }
+
+                onPressed: {
+                    console.log("topRightResizer pressed")
+                }
+
+                onPositionChanged: {
+                    if (pressed) {
+                        var newWidth = mainRectangle.width + mouseX;
+                        var newHeight = mainRectangle.height - mouseY;
+
+                        mainRectangle.width = clamp(newWidth, mainRectangle.minWidth, mainRectangle.maxWidth);
+                        mainRectangle.height = clamp(newHeight, mainRectangle.minHeight, mainRectangle.maxHeight);
+
+                        if (newHeight >= mainRectangle.minHeight && newHeight <= mainRectangle.maxHeight) {
+                            mainRectangle.y += mouseY;
+                        }
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            id: bottomRightResizer
+            width: 12
+            height: 12
+            radius: 12
+            visible: mainRectangle.isSelected
+            anchors.horizontalCenter: mainRectangle.right
+            anchors.verticalCenter: mainRectangle.bottom
+            color: "lightblue"
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                propagateComposedEvents: false
+
+                onEntered: {
+                    console.log("Hovering over the bottomRightResizer")
+                    cursorShape = Qt.SizeFDiagCursor
+                }
+
+                onExited: {
+                    console.log("Hover left the bottomRightResizer")
+                    cursorShape = Qt.ArrowCursor
+                }
+
+                onPressed: {
+                    console.log("bottomRightResizer pressed")
+                }
+
+                onPositionChanged: {
+                    if (pressed) {
+                        var newWidth = mainRectangle.width + mouseX;
+                        var newHeight = mainRectangle.height + mouseY;
+
+                        mainRectangle.width = clamp(newWidth, mainRectangle.minWidth, mainRectangle.maxWidth);
+                        mainRectangle.height = clamp(newHeight, mainRectangle.minHeight, mainRectangle.maxHeight);
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            id: topHeightResizer
+            width: 12
+            height: 12
+            radius: 12
+            visible: mainRectangle.isSelected
+            anchors.horizontalCenter: mainRectangle.horizontalCenter
+            anchors.verticalCenter: mainRectangle.top
+            color: "lightblue"
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                propagateComposedEvents: false
+
+                onEntered: {
+                    console.log("Hovering over the topHeightResizer")
+                    cursorShape = Qt.SizeVerCursor
+                }
+
+                onExited: {
+                    console.log("Hover left the topHeightResizer")
+                    cursorShape = Qt.ArrowCursor
+                }
+
+                onPressed: {
+                    console.log("topHeightResizer pressed")
+                }
+
+                onPositionChanged: {
+                    if (pressed) {
+                        var newHeight = mainRectangle.height - mouseY;
+                        mainRectangle.height = clamp(newHeight, mainRectangle.minHeight, mainRectangle.maxHeight);
+
+                        if (newHeight >= mainRectangle.minHeight && newHeight <= mainRectangle.maxHeight) {
+                            mainRectangle.y += mouseY;
+                        }
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            id: bottomHeightResizer
+            width: 12
+            height: 12
+            radius: 12
+            visible: mainRectangle.isSelected
+            anchors.horizontalCenter: mainRectangle.horizontalCenter
+            anchors.verticalCenter: mainRectangle.bottom
+            color: "lightblue"
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                propagateComposedEvents: false
+
+                onEntered: {
+                    console.log("Hovering over the bottomHeightResizer")
+                    cursorShape = Qt.SizeVerCursor
+                }
+
+                onExited: {
+                    console.log("Hover left the bottomHeightResizer")
+                    cursorShape = Qt.ArrowCursor
+                }
+
+                onPressed: {
+                    console.log("bottomHeightResizer pressed")
+                }
+
+                onPositionChanged: {
+                    if (pressed) {
+                        var newHeight = mainRectangle.height + mouseY;
+                        mainRectangle.height = clamp(newHeight, mainRectangle.minHeight, mainRectangle.maxHeight);
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            id: leftWidthResizer
+            width: 12
+            height: 12
+            radius: 12
+            visible: mainRectangle.isSelected
+            anchors.horizontalCenter: mainRectangle.left
+            anchors.verticalCenter: mainRectangle.verticalCenter
+            color: "lightblue"
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                propagateComposedEvents: false
+
+                onEntered: {
+                    console.log("Hovering over the leftWidthResizer")
+                    cursorShape = Qt.SizeHorCursor
+                }
+
+                onExited: {
+                    console.log("Hover left the leftWidthResizer")
+                    cursorShape = Qt.ArrowCursor
+                }
+
+                onPressed: {
+                    console.log("leftWidthResizer pressed")
+                }
+
+                onPositionChanged: {
+                    if (pressed) {
+                        var newWidth = mainRectangle.width - mouseX;
+
+                        mainRectangle.width = clamp(newWidth, mainRectangle.minWidth, mainRectangle.maxWidth);
+
+                        if (newWidth >= mainRectangle.minWidth && newWidth <= mainRectangle.maxWidth) {
+                            mainRectangle.x += mouseX;
+                        }
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            id: rightWidthResizer
+            width: 12
+            height: 12
+            radius: 12
+            visible: mainRectangle.isSelected
+            anchors.horizontalCenter: mainRectangle.right
+            anchors.verticalCenter: mainRectangle.verticalCenter
+            color: "lightblue"
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                propagateComposedEvents: false
+
+                onEntered: {
+                    console.log("Hovering over the rightWidthResizer")
+                    cursorShape = Qt.SizeHorCursor
+                }
+
+                onExited: {
+                    console.log("Hover left the rightWidthResizer")
+                    cursorShape = Qt.ArrowCursor
+                }
+
+                onPressed: {
+                    console.log("rightWidthResizer pressed")
+                }
+
+                onPositionChanged: {
+                    if (pressed) {
+                        var newWidth = mainRectangle.width + mouseX;
+                        mainRectangle.width = clamp(newWidth, mainRectangle.minWidth, mainRectangle.maxWidth);
                     }
                 }
             }
@@ -113,9 +421,7 @@ Item {
         }
     }
 
-    function resetFocus() {
-        mainRectangle.focus = false
-        rectText.focus = false
-        mainRectangle.isSelected = false
-    }
+    function clamp(value, min, max) {
+            return Math.max(min, Math.min(max, value))
+        }
 }
