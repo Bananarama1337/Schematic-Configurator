@@ -19,6 +19,9 @@ qt_add_qml_module(appschematic_builder
         Main.qml
         QML_FILES CustomRect.qml
         QML_FILES GridBackground.qml
+        SOURCES diagramdocument.h diagramdocument.cpp
+        SOURCES shapeitem.h
+        SOURCES shapemodel.h shapemodel.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

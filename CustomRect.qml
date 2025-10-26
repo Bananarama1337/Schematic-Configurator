@@ -364,13 +364,20 @@ Item {
             }
         }
 
+        // TODO: При выбор text курсор надо сбрасывать
+        // TODO: При нажатии на Enter каретка должна переходить на новую строку
         TextInput {
             id: rectText
+            wrapMode: TextInput.WordWrap
             text: "Test"
             font.pixelSize: 14
             anchors {
-                centerIn: parent
+                left: parent.left
+                right: parent.right
+                margins: 5
+                verticalCenter: parent.verticalCenter
             }
+            horizontalAlignment: TextInput.AlignHCenter
         }
 
         MouseArea {

@@ -18,15 +18,20 @@ Window {
         y: 50
     }
 
-    CustomRect {
-        id: rect2
-        x: 200
-        y: 50
-    }
+    Repeater {
+        model: diagramDocument.model
+        delegate: Rectangle {
+            width: 80; height: 50
+            color: "lightblue"
+            x: position.x
+            y: position.y
+            border.color: "#888"
+            radius: 6
 
-    CustomRect {
-        id: rect3
-        x: 400
-        y: 50
+            Text {
+                anchors.centerIn: parent
+                text: type
+            }
+        }
     }
 }

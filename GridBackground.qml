@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls
 
 Item {
     id: root
@@ -49,9 +50,26 @@ Item {
 
     MouseArea {
         anchors.fill: parent
+        acceptedButtons: Qt.RightButton | Qt.LeftButton
         onClicked: {
             console.log("Clicked on window background")
             forceActiveFocus()
         }
+
+        onDoubleClicked: (mouse) => {
+            forceActiveFocus()
+            if (mouse.button === Qt.LeftButton) {
+                contextMenu.x = mouse.x
+                contextMenu.y = mouse.y
+                contextMenu.open()
+            }
+        }
+
+    }
+
+    Menu {
+        id: contextMenu
+        MenuItem { text: "Добавить фигуру"; onTriggered: diagramDocument.addShape("CustomRect", Qt.point(contextMenu.x, contextMenu.y)) }
+        MenuItem { text: "Удалить всё"; onTriggered: diagramDocument.clear() }
     }
 }
